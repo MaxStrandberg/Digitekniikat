@@ -50,10 +50,13 @@
 	
     $(document).ready(function() {
         $("#imgsearchbtn").click(function(){
+        jQuery('#images ul').html('');
           (function searchmovies() {
+        
+        
+        var searchterm = document.getElementById('searchterm').value;
     
-      var searchterm = document.getElementById('searchterm').value;
-    
+
       console.log(searchterm);
       var movieAPI = "https://api.themoviedb.org/3/search/person?api_key=5168fd8e78b128991776c9d880afc6a5&language=en-US&query="+searchterm+"&page=1&include_adult=true";
 

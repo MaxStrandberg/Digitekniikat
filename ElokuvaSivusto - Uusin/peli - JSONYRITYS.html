@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title> MEMORY </title>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+<script src="js/jquery-ui.min.js" type="text/javascript"></script>
+<script src="js/lightbox.min.js" type="text/javascript"></script>
+<script src="js/lightbox.js" type="text/javascript"></script>
+
+
+<script>
+
+
+$(document).ready(function() {
+	var imgArr =[];
+	var movieAPI = "https://api.themoviedb.org/3/discover/movie?api_key=5168fd8e78b128991776c9d880afc6a5&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1";
+  $.getJSON( movieAPI, {
+    format: "json"
+  }).done(function( data ) {
+	  console.log(data);
+  	 
+  $.each( data.results, function( i, item ) {
+	  
+	  
+	 imgArr.push( '<img src="http://image.tmdb.org/t/p/w185/'+item.poster_path+'" id="image'+i+'">' );
+	 
+  });
+	  
+  })
+  return imgArr;
+});
+
+	/*testiä
+	var movieAPI = "https://api.themoviedb.org/3/discover/movie?api_key=5168fd8e78b128991776c9d880afc6a5&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1";
+	
+	
+	var imgArr = [];
+		
+	$.getJSON( movieAPI, {
+    	format: "json"
+  	}).done(function( data ) {
+	  //console.log(data);
+	
+	$.each( data.results, function( i, item ) {
+	imgArr.push("http://image.tmdb.org/t/p/w185/"+item.poster_path);
+  	})
+	//console.log(imgArr);
+	
+});
+		
+	console.log(imgArr);
+	
+
+	
+
+	*/ //testiä
+
+    var clicks = 0; //counts how may picks have been made in each turn
+    var firstchoice; //stores index of first card selected
+    var secondchoice; //stores index of second card selected
+
+    var match = 0; //counts matches made
+    var backcard = "guess.jpeg"; //shows back of card when turned over
+
+    var faces = []; //array to store card images
+    faces[0] = imgArr[0];
+    faces[1] = imgArr[1];
+    faces[2] = imgArr[2];
+    faces[3] = imgArr[2];
+    faces[4] = imgArr[1];
+    faces[5] = imgArr[0];
+	
+    function choose(card) {
+            if (clicks == 2) {
+                return;
+            }
+            if (clicks == 0) {
+                firstchoice = card;
+				
+                document.images[card].src = faces[card];
+                clicks = 1;
+				
+            } else {
+                clicks = 2;
+                secondchoice = card;
+                document.images[card].src = faces[card];
+                timer = setInterval("check()", 1000);
+				
+            }
+        }
+        /* Check to see if a match is made */
+
+    function check() {
+    clearInterval(timer); //stop timer
+    clicks = 0;
+    if (faces[secondchoice] == faces[firstchoice]) {
+        match++;
+        document.getElementById("matches").innerHTML = match;
+    } else {
+        document.images[firstchoice].src = backcard;
+        document.images[secondchoice].src = backcard;
+        return;
+    }
+}
+	
+
+</script>
+</head>
+
+<body>
+     <a href="javascript:choose(0)"><img src="guess.jpg" width="200px" height="200px" /></a>
+
+     <a href="javascript:choose(1)"><img src="guess.jpg" width="200px" height="200px" /></a>
+
+     <a href="javascript:choose(2)"><img src="guess.jpg" width="200px" height="200px" /></a>
+
+     <br>
+
+     <a href="javascript:choose(3)"><img src="guess.jpg" width="200px" height="200px"/></a>
+
+    <a href="javascript:choose(4)"><img src="guess.jpg" width="200px" height="200px" /></a>
+
+    <a href="javascript:choose(5)"><img src="guess.jpg" width="200px" height="200px" /></a>
+
+    <br>
+
+    <b style="font-size:40px;"> MATCHES :</b>
+    <b style="font-size:60px;" id="matches"> 0 </b>
+</body>
+
+</html>
